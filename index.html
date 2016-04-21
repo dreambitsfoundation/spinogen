@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--Bootstrap CSS file-->
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+        <!--Latest Compiled Javascript Bootstrap-->
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+        <!--JQuery Library-->
+        <script src="/jquery-2.1.4.min.js"></script>
+
+        <!--<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>-->
+        <!--This is a certain important notification that this software product is developed by Gourab Saha and all the latest working and non working, implemented and non implemented code written for this project by sole or any development team member, Gourab Saha holds complete upgradation, deletion and redistribution rights over them and can be used for commercial practice by the developer for his own benifit at any point of time without any prior notification-->
+        <!--The total source code is protected under Indian Laws for Digital Data Security-->
+        
+        <!--Stylesheet-->
+        <link rel="stylesheet" href="stylesheet.css">
+        
+        <script>
+            var d = new Date();
+            $(document).ready(function () {
+                $("#submit").click(function () {
+                    alert("processing...");
+                    var name = $("#e_id").val();
+                    var password = $("#e_pass").val();
+                    var data = "employer_id=" + name + "&password=" + password;
+                    var url = "logger.php";
+                    alert(data);
+                    $.post(url, data, function (data) {
+                        alert(data);
+                        var result = JSON.parse(data);
+                        //$("#status").html("Hey! Your Id is " + result["id"] + " and Password is " + result["pass"]);
+                        if (result["report"] == 1) {
+                            alert("Hello! " + result["name"]);
+                            //document.cookie = "spineuser=" + result["name"] + "; expires=" + d.getDay(); +", " + d.getDate(); +" " + d.getMonth(); +" " + d.getFullYear(); +"18:00:00 UTC";
+                            //alert(document.cookie);
+                            var link = "controller.php?user=" + result["name"] + "&eid="+result["e_id"]+"&priv="+result["priviledge"]+"";
+                            alert(link);
+                            window.location = link;
+                        } else {
+                            $("#blink").fadeIn();
+                            $("#e_id").focus();
+                        }
+                    });
+                    $("#status").html("Please Wait.....");
+                    return false;
+                });
+            });
+
+        </script>
+    </head>
+    <body>
+    <header style="top: 0px; width: 100%; height: 80px; background-color: red; text-align: center;">
+        <span style="margin-left: 5px;color: white">      &nbsp;&nbsp;&nbsp;<b style="font-size: 60px; color: white; font-family: arial">Spinogen</b> &nbsp;<b>Beta</b> </span>
+
+    </header>
+        <div class="container" align="center">
+        	<div class="alert alert-danger" style="margin-top:20px;width:500px;" id="blink" hidden>
+        		<strong>Oops!</strong> It seems you entered wrong credentials <br> Please try again.
+        	</div>
+            <div id="status"></div>
+        	<div class="jumbtron" id="jb_1">
+        		<h1 id="logger" align="center">Staffs Login</h1>
+        		<br>
+        		<form role="form" method="post" action="logger.php" id="login-form">
+        			<div class="form-group">
+        				<label for="e_id">Employer ID:</label>
+        				<input type="text" name="employer_id" placeholder="Enter Your Employer ID Here" class="form-control" value="" id="e_id" required>
+        			</div>
+        			<div class="form-group">
+        				<label for="e_pass"> Password:</label>
+        				<input type="password" name="password" placeholder="Enter Your Password Here" class="form-control" value="" id="e_pass" required>
+        			</div>
+        			<button type="submit" class="btn btn-primary btn-lg" value="Login" id="submit" onclick="return false">Sign In</button>
+        		</form>
+        	</div>
+        	<!--End of jumbtron-->
+        </div>
+        <footer>
+            <br>
+        	&copy; Gourab Saha. Under Section (o) of Copyright Act, 1957. Republic of India<br>
+            <hr>
+        </footer>
+    </body>
+</html>
